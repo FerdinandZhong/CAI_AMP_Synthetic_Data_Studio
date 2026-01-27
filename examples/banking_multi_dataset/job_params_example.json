@@ -1,0 +1,7 @@
+{
+  "job_name": "banking_pipeline_demo",
+  "request_id": "req_demo_12345",
+  "input_file": "examples/banking_multi_dataset/examples_flat.json",
+  "output_dir": "examples/banking_multi_dataset/pipeline_output",
+  "verbose": true
+}

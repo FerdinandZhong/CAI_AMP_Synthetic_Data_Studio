@@ -1,0 +1,61 @@
+---
+# CAI Job Configuration for Banking Multi-Dataset End-to-End Pipeline
+# This file defines how to run the pipeline as a CAI job in a Cloudera environment
+
+jobs:
+  # Banking Pipeline Job - runs the complete end-to-end pipeline
+  banking_pipeline:
+    name: "Banking Multi-Dataset Pipeline"
+    description: "Generate, validate, and process synthetic banking data"
+
+    # Script path (relative to project root)
+    script: "examples/banking_multi_dataset/end_to_end_pipeline.py"
+
+    # Python kernel
+    kernel: "python3"
+
+    # Runtime configuration (ML Runtime for Cloudera)
+    runtime_id: "docker.repository.cloudera.com/cloudera/cdsw/ml-runtime-pbj-jupyterlab-python3.11-standard:2025.09.1-b5"
+
+    # Resource allocation
+    cpu: 4
+    memory: 16
+    gpu: 0
+
+    # Execution timeout (30 minutes)
+    timeout: 1800
+
+    # Command-line arguments
+    arguments: ""
+
+    # Environment variables (can be overridden at runtime)
+    environment:
+      INPUT_FILE: "/data/banking_data.json"
+      OUTPUT_DIR: "/output/banking_results"
+
+    # No parent job - this can run independently
+    # To make it dependent on a data generation job, use:
+    # parent_job_key: "data_generation_job"
+
+
+# Example usage with CAI:
+#
+# 1. Create a job parameters JSON file:
+#    cat > job_params.json << 'EOF'
+#    {
+#      "job_name": "banking_pipeline_run",
+#      "request_id": "req_12345",
+#      "input_file": "/data/banking_data.json",
+#      "output_dir": "/output/results",
+#      "verbose": true
+#    }
+#    EOF
+#
+# 2. Run the CAI job:
+#    file_name=job_params.json python end_to_end_pipeline.py
+#
+# 3. Or run with environment variables:
+#    INPUT_FILE=/data/banking_data.json OUTPUT_DIR=/output/results python end_to_end_pipeline.py
+#
+# 4. Or run with command-line arguments:
+#    python end_to_end_pipeline.py --input /data/banking_data.json --output /output/results --verbose
