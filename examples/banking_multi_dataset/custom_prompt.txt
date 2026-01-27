@@ -17,7 +17,7 @@ Fields:
 - email: Email address (synthetic, format: name@domain.com)
 - phone: Phone number (Singapore format: XXXX-XXXX, 8 digits starting with 6, 8, or 9)
 - address: Street address (synthetic, Singapore location)
-- city: Singapore district or location (e.g., "Marina Bay", "Orchard", "Jurong", "Tampines", "Clementi")
+- branch: Banking branch location (e.g., "Marina Bay Branch", "Orchard Branch", "Jurong Branch", "Tampines Branch", "Clementi Branch")
 - postal_code: Singapore postal code (6-digit format: XXXXXX)
 - region: Singapore postal region code (two letters: SG followed by region indicator)
 - customer_since: Account opening date (YYYY-MM-DD)
