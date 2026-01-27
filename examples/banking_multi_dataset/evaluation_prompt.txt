@@ -1,0 +1,73 @@
+You are evaluating synthetic banking data with three interconnected datasets: Customers, Accounts, and Transactions.
+
+**Evaluation Criteria (10-point scale):**
+
+Start with 10 points and deduct for violations:
+
+1. **Privacy Violations (-2 points each):**
+   - Real person names, addresses, or contact information
+   - Leaked example data
+   - Use of actual company names or real merchants
+
+2. **Referential Integrity Violations (-4 points each):**
+   - account.cust_id references non-existent customer
+   - transaction.account_id references non-existent account
+   - Orphan records in any dataset
+   - Duplicate IDs within a dataset (duplicate cust_id, account_id, or transaction_id)
+
+3. **Temporal Consistency Violations (-2 points each):**
+   - account.open_date before customer.customer_since
+   - transaction.transaction_date before account.open_date
+   - Transactions not in chronological order for the same account
+   - Invalid date formats or impossible dates
+
+4. **Business Logic Violations (-1 point each):**
+   - Savings account with negative balance
+   - Checking account balance exceeding overdraft limit (more negative than -overdraft_limit)
+   - Closed account with non-zero balance
+   - Interest rate doesn't match account type (e.g., Savings > 5%, Checking > 1%)
+   - Customer segment doesn't match account holdings (e.g., Small Business without Business Checking)
+   - Credit score outside valid range (300-850)
+
+5. **Data Quality Issues (-1 point each):**
+   - Formatting errors (dates not in YYYY-MM-DD, times not in HH:MM:SS)
+   - Monetary amounts not properly formatted (should have 2 decimal places)
+   - Unrealistic values (credit_score > 850, age < 18 or > 120)
+   - balance_after calculation errors
+   - Missing required fields
+   - Invalid enum values (e.g., account_type not in allowed list)
+
+6. **Cross-Column Consistency (-1 point each):**
+   - Email doesn't follow reasonable pattern from name
+   - Credit score doesn't align with customer segment
+   - Phone number doesn't use 555 prefix
+   - Transaction category doesn't match merchant type
+   - ZIP code doesn't match state
+   - Customer age incompatible with account history (e.g., 20-year-old with 30-year account history)
+
+**Scoring:**
+- 9-10: Excellent - No major violations, minor issues only
+- 7-8: Good - A few minor violations but maintains referential integrity
+- 5-6: Acceptable - Some violations but generally usable
+- 3-4: Poor - Multiple serious violations including referential integrity issues
+- 1-2: Unusable - Critical referential integrity violations, privacy issues, or severe data quality problems
+
+**Required Output Format:**
+Provide your evaluation in the following JSON format:
+{
+    "score": <number between 1-10>,
+    "justification": "<detailed explanation of score with specific violations found>"
+}
+
+In your justification:
+1. List all violations found, grouped by category
+2. Explain how each violation impacted the score
+3. Highlight any particularly good aspects of the data
+4. Note if referential integrity is maintained (this is critical)
+5. Provide specific examples of violations (e.g., "Transaction T10005 references non-existent account A99999")
+
+**Example Good Justification:**
+"Score: 8/10. The data maintains excellent referential integrity with all foreign keys properly linked. Minor deductions: (1) Customer C10001's email 'john@gmail.com' uses a real domain (-1 point), (2) Account A10002 has interest_rate of 0.5% which is high for checking (-1 point). Otherwise, temporal consistency is maintained, business logic is sound, and formatting is correct."
+
+**Example Poor Justification:**
+"Score: 3/10. Multiple critical issues: (1) Transaction T10003 references account_id 'A99999' which doesn't exist in accounts dataset (-4 points), (2) Customer C10002 has customer_since='2020-05-10' but their account open_date='2018-01-15' which is temporally impossible (-2 points), (3) Account A10004 is a Savings account with current_balance=-500.00 violating business rules (-1 point). The data is not usable due to referential integrity violations."

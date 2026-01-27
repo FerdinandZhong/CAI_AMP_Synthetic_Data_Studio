@@ -1,0 +1,88 @@
+# Banking Data Generation Topics
+#
+# Use these topics to guide the generation of diverse banking scenarios.
+# You can mix and match or create your own custom topics.
+
+# Customer Segments
+Young Professional with multiple accounts
+Small Business owner with high transaction volume
+Retiree with high net worth
+New customer with minimal history
+Family with joint accounts
+Student with basic checking account
+Freelancer with irregular income
+Corporate executive with premium accounts
+Single parent managing household finances
+Recent college graduate starting career
+
+# Account Patterns
+Customer with dormant accounts
+Multi-account holder (checking, savings, CD, money market)
+Business checking with frequent transactions
+Savings account with regular deposits
+Account with overdraft history
+Customer with only one checking account
+Customer transitioning from basic to premium accounts
+Long-term customer with 20+ year history
+Customer with seasonal account activity
+International customer with multi-currency accounts
+
+# Transaction Scenarios
+High frequency transaction account (20+ transactions/month)
+Low activity account (2-5 transactions/month)
+Salary and bill payment pattern
+Business revenue and expenses
+Investment and transfer patterns
+Customer with regular charitable giving
+Account with consistent savings deposits
+Customer with travel-related transactions
+Account with primarily online transactions
+Customer with mixed online and in-person banking
+
+# Life Events & Behaviors
+Customer opening first home mortgage
+Retiree drawing down retirement accounts
+Young family saving for college
+Business owner expanding operations
+Customer recovering from financial hardship
+High net worth individual with wealth management
+Customer with excellent credit history
+Customer building credit for first time
+Account holder with perfect payment record
+Customer managing medical expense payments
+
+# Risk & Credit Profiles
+High credit score customer (800+)
+Building credit customer (650-700)
+Customer with past credit challenges
+Prime borrowing customer
+Subprime lending candidate
+Customer with variable income sources
+Stable employment with consistent deposits
+Self-employed with fluctuating cash flow
+Retired with fixed income streams
+Multiple income source household
+
+# Account Activity Levels
+Very active account (daily transactions)
+Moderate activity account (weekly transactions)
+Inactive account nearing dormancy
+Recently closed account
+Newly opened account (< 3 months)
+Mature account (> 10 years)
+Seasonal business account (activity varies by quarter)
+Account with scheduled automated transactions
+Emergency fund account (deposits only, rare withdrawals)
+Operating account with high turnover
+
+# Specialized Banking Needs
+Non-profit organization account
+Trust account management
+Estate account administration
+Student loan management account
+Small business payroll account
+Rental property management account
+Investment portfolio linked account
+Health savings account (HSA)
+Flexible spending account (FSA)
+529 college savings account

@@ -1,0 +1,4 @@
+address,city,credit_score,cust_id,customer_segment,customer_since,date_of_birth,email,first_name,last_name,phone,state,zip_code
+123 Main St,San Francisco,720,C10001,Young Professional,2020-01-15,1995-03-15,sarah.j@email.com,Sarah,Johnson,555-0123,CA,94102
+456 Oak Avenue,Austin,780,C10002,Small Business,2018-05-10,1982-07-22,mchen@smallbiz.com,Michael,Chen,555-0456,TX,78701
+789 Elm Street,Miami,810,C10003,Retiree,2005-03-20,1958-11-08,e.rodriguez@email.com,Emily,Rodriguez,555-0789,FL,33101

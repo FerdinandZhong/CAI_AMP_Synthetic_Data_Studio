@@ -1,0 +1,99 @@
+Generate synthetic banking data with three interconnected datasets: Customers, Accounts, and Transactions.
+This structure simulates a normalized relational database with proper foreign key relationships.
+
+**CRITICAL REFERENTIAL INTEGRITY REQUIREMENTS:**
+1. Each customer must have a unique cust_id
+2. Each account must reference a valid cust_id from the customers dataset
+3. Each transaction must reference a valid account_id from the accounts dataset
+4. A customer can have 1-5 accounts
+5. Each account should have 2-20 transactions
+
+**DATASET 1: CUSTOMERS**
+Fields:
+- cust_id: Unique customer identifier (format: C10001, C10002, etc.)
+- first_name: Customer's first name (synthetic)
+- last_name: Customer's last name (synthetic)
+- date_of_birth: Birth date (YYYY-MM-DD format, age between 18-80)
+- email: Email address (synthetic, format: name@domain.com)
+- phone: Phone number (format: 555-XXXX)
+- address: Street address (synthetic)
+- city: City name
+- state: Two-letter state code
+- zip_code: 5-digit ZIP code
+- customer_since: Account opening date (YYYY-MM-DD)
+- customer_segment: One of ["Retail", "Small Business", "Young Professional", "Retiree", "High Net Worth"]
+- credit_score: Integer between 300-850
+
+**DATASET 2: ACCOUNTS**
+Fields:
+- account_id: Unique account identifier (format: A10001, A10002, etc.)
+- cust_id: Foreign key to customers.cust_id (MUST exist in customers dataset)
+- account_type: One of ["Checking", "Savings", "Business Checking", "Money Market", "CD"]
+- account_status: One of ["Active", "Inactive", "Closed", "Frozen"]
+- open_date: Account opening date (YYYY-MM-DD, must be >= customer_since)
+- current_balance: Decimal number (can be negative for overdrafts)
+- currency: "USD"
+- interest_rate: Decimal percentage (0.01 to 5.0)
+- overdraft_limit: Decimal number (0 for savings, 500-5000 for checking)
+
+**DATASET 3: TRANSACTIONS**
+Fields:
+- transaction_id: Unique transaction identifier (format: T10001, T10002, etc.)
+- account_id: Foreign key to accounts.account_id (MUST exist in accounts dataset)
+- transaction_date: Date of transaction (YYYY-MM-DD)
+- transaction_time: Time of transaction (HH:MM:SS)
+- transaction_type: One of ["Credit", "Debit"]
+- transaction_category: One of ["Groceries", "Salary", "ATM Withdrawal", "Transfer", "Interest", "Bill Payment", "Business Income", "Business Expense", "Rent", "Utilities"]
+- amount: Decimal number (negative for debits, positive for credits)
+- merchant_name: Name of merchant or source/destination
+- description: Brief transaction description
+- balance_after: Account balance after this transaction
+
+**CONSISTENCY REQUIREMENTS:**
+
+1. **Referential Integrity:**
+   - All cust_id values in accounts must exist in customers
+   - All account_id values in transactions must exist in accounts
+   - Never create orphan records
+
+2. **Temporal Consistency:**
+   - customer_since must be before all account open_date values for that customer
+   - Transaction dates must be on or after the account open_date
+   - Transactions should be in chronological order within each account
+   - balance_after should reflect cumulative effect of transactions
+
+3. **Business Logic:**
+   - Savings accounts cannot have negative balances
+   - Checking accounts can go negative up to overdraft_limit
+   - Interest rate should align with account type (Savings: 1-3%, Checking: 0-0.5%, CD: 3-5%)
+   - Account status "Closed" should have current_balance = 0
+   - Small Business segment should primarily have Business Checking accounts
+   - High Net Worth customers should have higher balances (>$100k total)
+
+4. **Data Quality:**
+   - No real personal information (use synthetic names, addresses)
+   - Email should be derivable from first_name.last_name but don't use actual domains
+   - Phone numbers should use 555 prefix
+   - Credit scores should align with customer segment (High Net Worth: 750+, Young Professional: 650-750)
+   - Transaction amounts should be realistic for the category
+
+5. **Privacy Guidelines:**
+   - Avoid real PII
+   - Ensure examples are not leaked into synthetic data
+   - Use generic merchant names
+
+6. **Formatting Guidelines:**
+   - All monetary amounts as decimals with 2 decimal places
+   - Dates in YYYY-MM-DD format
+   - Times in HH:MM:SS format
+   - IDs must be unique across the entire dataset
+
+**OUTPUT FORMAT:**
+Generate JSON with the structure shown in the examples:
+{
+    "customer": {...},
+    "accounts": [{...}, {...}],
+    "transactions": [{...}, {...}, ...]
+}
+
+Each JSON object should represent one complete customer with all their accounts and transactions.
