@@ -1,4 +1,6 @@
-You are evaluating synthetic banking data with three interconnected datasets: Customers, Accounts, and Transactions.
+You are evaluating synthetic banking data for Singapore with three interconnected datasets: Customers, Accounts, and Transactions.
+
+All monetary amounts should be in SGD (Singapore Dollars). Phone numbers should follow Singapore format (XXXX-XXXX, 8 digits starting with 6, 8, or 9). Postal codes should be 6-digit Singapore format (XXXXXX). Customers can be of various nationalities (Singaporean, Malaysian, Indian, Chinese, Filipino, Indonesian, Thai, etc.). Accounts are associated with banking branch locations.
 
 **Evaluation Criteria (10-point scale):**
 
@@ -25,9 +27,10 @@ Start with 10 points and deduct for violations:
    - Savings account with negative balance
    - Checking account balance exceeding overdraft limit (more negative than -overdraft_limit)
    - Closed account with non-zero balance
-   - Interest rate doesn't match account type (e.g., Savings > 5%, Checking > 1%)
+   - Interest rate doesn't match account type (e.g., Savings > 2%, Checking > 0.25%, Fixed Deposit > 4.5% - Singapore rates)
    - Customer segment doesn't match account holdings (e.g., Small Business without Business Checking)
    - Credit score outside valid range (300-850)
+   - Invalid branch name (should be valid Singapore banking branch location)
 
 5. **Data Quality Issues (-1 point each):**
    - Formatting errors (dates not in YYYY-MM-DD, times not in HH:MM:SS)
@@ -40,10 +43,11 @@ Start with 10 points and deduct for violations:
 6. **Cross-Column Consistency (-1 point each):**
    - Email doesn't follow reasonable pattern from name
    - Credit score doesn't align with customer segment
-   - Phone number doesn't use 555 prefix
+   - Phone number doesn't follow Singapore format (XXXX-XXXX, 8 digits starting with 6, 8, or 9)
    - Transaction category doesn't match merchant type
-   - ZIP code doesn't match state
+   - Postal code doesn't follow Singapore 6-digit format (XXXXXX)
    - Customer age incompatible with account history (e.g., 20-year-old with 30-year account history)
+   - Nationality field not from valid list (e.g., "Singaporean", "Malaysian", "Indian", "Chinese", "Filipino", "Indonesian", "Thai")
 
 **Scoring:**
 - 9-10: Excellent - No major violations, minor issues only
@@ -67,7 +71,7 @@ In your justification:
 5. Provide specific examples of violations (e.g., "Transaction T10005 references non-existent account A99999")
 
 **Example Good Justification:**
-"Score: 8/10. The data maintains excellent referential integrity with all foreign keys properly linked. Minor deductions: (1) Customer C10001's email 'john@gmail.com' uses a real domain (-1 point), (2) Account A10002 has interest_rate of 0.5% which is high for checking (-1 point). Otherwise, temporal consistency is maintained, business logic is sound, and formatting is correct."
+"Score: 8/10. The data maintains excellent referential integrity with all foreign keys properly linked. All customers have valid Singapore branches and valid nationalities. Minor deductions: (1) Customer C10001's email 'sarah.lim@gmail.com' uses a real domain (-1 point), (2) Account A10002 has interest_rate of 0.25% which is slightly high for savings (-1 point). Otherwise, temporal consistency is maintained, business logic is sound, and formatting is correct with proper SGD currency and phone formats."
 
 **Example Poor Justification:**
-"Score: 3/10. Multiple critical issues: (1) Transaction T10003 references account_id 'A99999' which doesn't exist in accounts dataset (-4 points), (2) Customer C10002 has customer_since='2020-05-10' but their account open_date='2018-01-15' which is temporally impossible (-2 points), (3) Account A10004 is a Savings account with current_balance=-500.00 violating business rules (-1 point). The data is not usable due to referential integrity violations."
+"Score: 3/10. Multiple critical issues: (1) Transaction T10003 references account_id 'A99999' which doesn't exist in accounts dataset (-4 points), (2) Customer C10002 has customer_since='2020-05-10' but their account open_date='2018-01-15' which is temporally impossible (-2 points), (3) Account A10004 is a Savings account with current_balance=-500.00 SGD violating business rules (-1 point), (4) Customer C10001 has phone number '555-0123' which is not valid Singapore format (should be XXXX-XXXX with 6, 8, or 9 prefix) (-1 point), (5) Customer C10003 has invalid nationality 'British' not from approved list (-1 point). The data is not usable due to referential integrity and format violations."
