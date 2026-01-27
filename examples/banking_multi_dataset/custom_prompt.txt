@@ -17,8 +17,8 @@ Fields:
 - email: Email address (synthetic, format: name@domain.com)
 - phone: Phone number (Singapore format: XXXX-XXXX, 8 digits starting with 6, 8, or 9)
 - address: Street address (synthetic, Singapore location)
-- branch: Banking branch location (e.g., "Marina Bay Branch", "Orchard Branch", "Jurong Branch", "Tampines Branch", "Clementi Branch")
 - postal_code: Singapore postal code (6-digit format: XXXXXX)
+- nationality: Customer nationality (e.g., "Singaporean", "Malaysian", "Indian", "Chinese", "Filipino", "Indonesian", "Thai")
 - region: Singapore postal region code (two letters: SG followed by region indicator)
 - customer_since: Account opening date (YYYY-MM-DD)
 - customer_segment: One of ["Retail", "Small Business", "Young Professional", "Retiree", "High Net Worth"]
@@ -30,6 +30,7 @@ Fields:
 - cust_id: Foreign key to customers.cust_id (MUST exist in customers dataset)
 - account_type: One of ["Checking", "Savings", "Business Checking", "Money Market", "Fixed Deposit"]
 - account_status: One of ["Active", "Inactive", "Closed", "Frozen"]
+- branch: Banking branch location (e.g., "Marina Bay Branch", "Orchard Branch", "Jurong Branch", "Tampines Branch", "Clementi Branch")
 - open_date: Account opening date (YYYY-MM-DD, must be >= customer_since)
 - current_balance: Decimal number in SGD (can be negative for overdrafts)
 - currency: "SGD"
