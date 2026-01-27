@@ -1,6 +1,18 @@
 You are evaluating synthetic banking data for Singapore with three interconnected datasets: Customers, Accounts, and Transactions.
 
-All monetary amounts should be in SGD (Singapore Dollars). Phone numbers should follow Singapore format (XXXX-XXXX, 8 digits starting with 6, 8, or 9). Postal codes should be 6-digit Singapore format (XXXXXX). Customers can be of various nationalities (Singaporean, Malaysian, Indian, Chinese, Filipino, Indonesian, Thai, etc.). Accounts are associated with banking branch locations.
+All monetary amounts should be in SGD (Singapore Dollars).
+
+**Phone number format:** XXXX-XXXX with 8 digits total, starting digit must be 6, 8, or 9
+- Valid examples: 6234-5678, 8765-4321, 9123-4560
+- Invalid examples: 555-0123 (wrong prefix), 1234-5678 (starts with 1), 61234567 (no dash)
+
+**Postal code format:** 6-digit Singapore postal code (XXXXXX)
+- Valid examples: 018981, 628554, 238823, 589123, 039594
+- Invalid examples: 94102 (5 digits), 12345 (5 digits), ABC1234 (contains letters)
+
+**Nationality:** Customers can be of various nationalities from the approved list (Singaporean, Malaysian, Indian, Chinese, Filipino, Indonesian, Thai, etc.). Do NOT flag as violation if nationality is from this list.
+
+**Accounts:** Associated with banking branch locations (e.g., Marina Bay Branch, Orchard Branch, Jurong Branch, Tampines Branch, Clementi Branch).
 
 **Evaluation Criteria (10-point scale):**
 
@@ -70,8 +82,21 @@ In your justification:
 4. Note if referential integrity is maintained (this is critical)
 5. Provide specific examples of violations (e.g., "Transaction T10005 references non-existent account A99999")
 
+**IMPORTANT - Common Evaluation Mistakes (Do NOT flag as violations):**
+- Phone number '9123-4560' is VALID (starts with 9, format XXXX-XXXX)
+- Phone number '8765-4321' is VALID (starts with 8, format XXXX-XXXX)
+- Phone number '6234-5678' is VALID (starts with 6, format XXXX-XXXX)
+- Postal code '589123' is VALID (6 digits, Singapore format)
+- Postal code '018981' is VALID (6 digits, Singapore format)
+- Postal code '238823' is VALID (6 digits, Singapore format)
+- Nationality 'Malaysian' is VALID (in approved list)
+- Nationality 'Indian' is VALID (in approved list)
+- Nationality 'Thai' is VALID (in approved list)
+
+Only flag format violations if they ACTUALLY violate the rules, not if they just look unusual.
+
 **Example Good Justification:**
 "Score: 8/10. The data maintains excellent referential integrity with all foreign keys properly linked. All customers have valid Singapore branches and valid nationalities. Minor deductions: (1) Customer C10001's email 'sarah.lim@gmail.com' uses a real domain (-1 point), (2) Account A10002 has interest_rate of 0.25% which is slightly high for savings (-1 point). Otherwise, temporal consistency is maintained, business logic is sound, and formatting is correct with proper SGD currency and phone formats."
 
 **Example Poor Justification:**
-"Score: 3/10. Multiple critical issues: (1) Transaction T10003 references account_id 'A99999' which doesn't exist in accounts dataset (-4 points), (2) Customer C10002 has customer_since='2020-05-10' but their account open_date='2018-01-15' which is temporally impossible (-2 points), (3) Account A10004 is a Savings account with current_balance=-500.00 SGD violating business rules (-1 point), (4) Customer C10001 has phone number '555-0123' which is not valid Singapore format (should be XXXX-XXXX with 6, 8, or 9 prefix) (-1 point), (5) Customer C10003 has invalid nationality 'British' not from approved list (-1 point). The data is not usable due to referential integrity and format violations."
+"Score: 3/10. Multiple critical issues: (1) Transaction T10003 references account_id 'A99999' which doesn't exist in accounts dataset (-4 points), (2) Customer C10002 has customer_since='2020-05-10' but their account open_date='2018-01-15' which is temporally impossible (-2 points), (3) Account A10004 is a Savings account with current_balance=-500.00 SGD violating business rules (-1 point), (4) Customer C10001 has phone number '555-0123' which is not valid Singapore format (should start with 6, 8, or 9, got 5) (-1 point), (5) Customer C10003 has postal code '12345' which is only 5 digits (should be 6-digit Singapore format) (-1 point), (6) Customer C10005 has invalid nationality 'British' not from approved list (-1 point). The data is not usable due to referential integrity and format violations."
