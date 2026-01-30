@@ -1,0 +1,74 @@
+[
+  {
+    "id": "example_1_excellent",
+    "score": 9,
+    "quality": "Excellent",
+    "question": "Find all employees from the Engineering department who earn more than 60000",
+    "query": "SELECT * FROM employees WHERE department = 'Engineering' AND salary > 60000;",
+    "validity": "✓ Valid tables (employees exists), valid columns (department, salary exist), correct data types",
+    "question_alignment": "✓ Query directly answers the question. Selects all columns for comprehensive employee info",
+    "patterns": "Basic SELECT/WHERE with multiple conditions - trains AND operator usage",
+    "issues": "None",
+    "justification": "Score: 9/10. This is an excellent training example. The question is clear and unambiguous ('Engineering' department, salary threshold of 60000). The SQL query is syntactically correct, uses straightforward logic with AND conditions, and directly answers the question. Schema is valid - references existing 'employees' table with correct column names. The query demonstrates a fundamental pattern (filtered SELECT) that's essential for SQL training. Pedagogically valuable because it teaches: table selection, column filtering, and AND operator usage. The only minor improvement would be slightly more explicit column selection, but SELECT * is acceptable here for comprehensive results."
+  },
+  {
+    "id": "example_2_good",
+    "score": 7,
+    "quality": "Good",
+    "question": "What is the average salary for each department? Show department name and average salary",
+    "query": "SELECT d.name, AVG(e.salary) as avg_salary FROM employees e JOIN departments d ON e.department = d.name GROUP BY d.name;",
+    "validity": "✓ Valid tables and columns. JOIN uses reasonable logic (department name matching), though assumes 'department' stores department name string rather than ID",
+    "question_alignment": "✓ Query answers the question. Returns department name and average salary as requested",
+    "patterns": "JOIN, GROUP BY, aggregate function (AVG) - teaches multi-table queries and aggregation",
+    "issues": "Minor: Schema uses 'department' as VARCHAR in employees, but the JOIN assumes it contains department names. This works but ideally should use department IDs for proper referential integrity. No syntax errors.",
+    "justification": "Score: 7/10. A good training example with educational value. The question clearly specifies desired output (department name and average salary). The SQL demonstrates important patterns: JOINs between two tables and GROUP BY with aggregation. Schema validity is generally sound - references exist, though the JOIN condition (e.department = d.name) makes an assumption about data content rather than using proper foreign key relationship. This is still useful for training basic JOINs and aggregations. Deduction: (1) The JOIN logic could be clearer if employees used department_id as FK (-1 point). (2) Aliases (e, d) are good practice and help with clarity. Overall, this teaches JOIN syntax and GROUP BY aggregation effectively despite the minor schema design assumption."
+  },
+  {
+    "id": "example_3_acceptable",
+    "score": 5,
+    "quality": "Acceptable",
+    "question": "Get employees",
+    "query": "SELECT name, salary, department FROM employees WHERE department IN ('Sales', 'Marketing') ORDER BY salary DESC;",
+    "validity": "✓ Valid tables (employees) and columns (name, salary, department exist)",
+    "question_alignment": "⚠ Question is too vague ('Get employees' doesn't specify which ones). Query adds specificity (Sales/Marketing departments) that wasn't in the original question. This creates ambiguity about what was actually intended",
+    "patterns": "SELECT, WHERE with IN operator, ORDER BY - teaches multiple patterns but lacks focus",
+    "issues": "Misalignment: Question doesn't specify filtering criteria. Query assumes Sales and Marketing departments without explicit question guidance. This creates training confusion about question interpretation",
+    "justification": "Score: 5/10. Acceptable but has clarity issues. The query itself is syntactically correct and references valid schema elements. It demonstrates useful patterns (IN operator for multiple values, ORDER BY for sorting). However, the question-query alignment has a significant gap: the question just says 'Get employees' (vague, unclear intent) while the query filters to specific departments that weren't mentioned in the question. For training purposes, this creates ambiguity - is the model learning how to infer missing filter criteria, or learning that questions can be reinterpreted? Better practice: question should explicitly state filtering criteria. The query works and teaches SQL patterns, but the vagueness reduces pedagogical value (-2 points). Useful for learning IN operator and ORDER BY, but the misalignment makes it less ideal for training."
+  },
+  {
+    "id": "example_4_poor",
+    "score": 3,
+    "quality": "Poor",
+    "question": "Find managers and their average employee salary",
+    "query": "SELECT m.name, AVG(e.salary) FROM departments m JOIN employees e ON m.id = e.manager_id GROUP BY m.id;",
+    "validity": "✗ Schema issue: employees table has no 'manager_id' column. The query references e.manager_id which doesn't exist in the schema",
+    "question_alignment": "⚠ Partial: Query attempts to answer the question but the schema reference is invalid. The logic (JOINing on manager_id) is conceptually sound but won't execute",
+    "patterns": "Attempted JOIN, GROUP BY, AVG - good patterns but broken by schema error",
+    "issues": "Critical (-4): Column 'manager_id' doesn't exist in employees table. Query will fail at execution. The manager_id exists in departments table but is not a foreign key in employees",
+    "justification": "Score: 3/10. Poor training example due to critical schema validity issue. While the question is clear (find managers and average salary), the SQL query references a non-existent column (e.manager_id). The employees table schema only has: id, name, department, salary. Manager information is stored in the departments table, not employees. This query will produce a runtime error and teaches incorrect schema understanding. The logic is conceptually reasonable (aggregate salary by manager), but the implementation is fundamentally broken. Deduction: (-4) for referential error - schema shows manager_id belongs to departments, not employees. The query demonstrates a misunderstanding of the schema structure. Not suitable for training because it teaches wrong schema relationships and won't execute."
+  },
+  {
+    "id": "example_5_unusable",
+    "score": 1,
+    "quality": "Unusable",
+    "question": "Get employee data",
+    "query": "SELCT name, salary FORM employees WHERE department = 'IT';",
+    "validity": "✗ Multiple syntax errors: 'SELCT' instead of 'SELECT', 'FORM' instead of 'FROM'",
+    "question_alignment": "⚠ Too vague ('Get employee data') and query has syntax errors so it won't execute at all",
+    "patterns": "None - cannot evaluate patterns due to syntax errors",
+    "issues": "Critical (-4): Syntax errors make query non-executable. 'SELCT' misspelled (should be SELECT). 'FORM' misspelled (should be FROM). Tables and columns are valid but syntax errors prevent execution",
+    "justification": "Score: 1/10. Completely unusable as training data. The query contains multiple critical syntax errors ('SELCT' instead of 'SELECT', 'FORM' instead of 'FROM') that cause immediate failure. While the question is vague, the query won't even execute due to syntax issues. This example teaches nothing except how NOT to write SQL. Deductions: (-4) for multiple syntax errors that break query execution. (-2) for vague question. (-1) for poor alignment. The schema references (employees table, department column) are correct, but the syntax errors completely invalidate this as a training example. Should be rejected and regenerated."
+  },
+  {
+    "id": "example_6_excellent_advanced",
+    "score": 9,
+    "quality": "Excellent",
+    "question": "Show department names with their total budget and number of employees in that department",
+    "query": "SELECT d.name, d.budget, COUNT(e.id) as employee_count FROM departments d LEFT JOIN employees e ON d.name = e.department GROUP BY d.id, d.name, d.budget;",
+    "validity": "✓ Valid tables (departments, employees), valid columns (name, budget, id), LEFT JOIN appropriate for including all departments even those without employees",
+    "question_alignment": "✓ Query returns exactly what's requested: department names, budgets, and employee counts",
+    "patterns": "LEFT JOIN, GROUP BY with multiple columns, COUNT aggregate, column aliasing - teaches advanced GROUP BY patterns",
+    "issues": "None - syntax is correct, schema is valid, logic is sound",
+    "justification": "Score: 9/10. Excellent advanced training example. The question is specific and clearly states three requested outputs (department names, budgets, employee counts). The SQL query correctly implements this using a LEFT JOIN (important pattern - preserves all departments even those without employees), GROUP BY with multiple columns, and COUNT aggregation. Schema references are valid and the JOIN condition makes appropriate assumptions. The query demonstrates: multi-table joins, aggregate functions beyond simple AVG/SUM, proper grouping, and LEFT JOIN semantics. Pedagogically excellent for teaching when to use LEFT vs INNER JOIN. Only potential minor note: the GROUP BY includes d.budget even though it's not strictly necessary with d.id and d.name (since these uniquely identify department), but this is good defensive SQL practice. Ideal for intermediate SQL training."
+  }
+]

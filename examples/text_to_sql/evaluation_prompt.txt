@@ -1,0 +1,52 @@
+Below is a SQL Query Question and Solution pair generated for TEXT2SQL 
+training data. Evaluate its quality as a training example using these 
+criteria:
+
+**1. Schema Validity (Critical)**
+- Deduct 4 points if any table name doesn't exist in schema
+- Deduct 4 points if any column name is invalid for the table
+- Deduct 4 points if JOINs reference non-existent FK relationships
+- Deduct 2 points if data type operations are inappropriate
+
+**2. Question-Query Alignment (Critical)**
+- Deduct 4 points if the SQL doesn't answer the question
+- Deduct 2 points if the question is ambiguous or unclear
+- Deduct 2 points if required information is missing from results
+- Deduct 1 point if the query over-selects columns
+
+**3. SQL Correctness (Critical)**
+- Deduct 4 points if query has syntax errors
+- Deduct 2 points if GROUP BY missing required columns
+- Deduct 2 points if aggregate functions used incorrectly
+- Deduct 1 point if column references are ambiguous
+
+**4. Query Patterns (Educational Value)**
+Identify which SQL patterns the query demonstrates:
+- Basic SELECT/WHERE ✓
+- JOINs ✓
+- GROUP BY/HAVING ✓
+- Aggregate functions ✓
+- Subqueries ✓
+- Window functions ✓
+
+**5. Clarity & Simplicity**
+- Question should be unambiguous (+1 for clarity)
+- Query should use straightforward logic (+1 for simplicity)
+- Both should be understandable for learning (+1 for pedagogical value)
+
+Scoring (10-point scale, starting at 10):
+- 9-10: Excellent training example - valid, clear, correct
+- 7-8: Good - minor issues but educational
+- 5-6: Acceptable - works but could be clearer
+- 3-4: Poor - significant issues, limited value
+- 1-2: Unusable - schema/correctness issues
+
+**Output Format:**
+{
+  "score": <number>,
+  "validity": "<valid/invalid tables, columns, joins>",
+  "question_alignment": "<does query answer question?>",
+  "patterns": "<list SQL patterns used>",
+  "issues": "<any schema/correctness issues>",
+  "justification": "<explanation of score>"
+}
