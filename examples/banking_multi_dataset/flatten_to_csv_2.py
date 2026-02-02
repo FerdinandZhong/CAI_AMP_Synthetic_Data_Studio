@@ -79,10 +79,26 @@ class DataFlattener:
         }
 
     def _flatten_record(self, record: Dict[str, Any]) -> Dict[str, Any]:
-        """Flatten a single customer record with accounts and transactions"""
-        customer = record.get("customer", {})
+        """Flatten a single customer record with accounts and transactions
+
+        Handles two input formats:
+        1. Nested: {"customer": {...}, "accounts": [...], "transactions": [...]}
+        2. Flat: {"cust_id": "...", ..., "accounts": [...], "transactions": [...]}
+        """
         accounts = record.get("accounts", [])
         transactions = record.get("transactions", [])
+
+        # Check if customer data is nested under "customer" key or at root level
+        if "customer" in record and isinstance(record["customer"], dict):
+            # Nested format: {"customer": {...}, "accounts": [...], ...}
+            customer = record.get("customer", {})
+        else:
+            # Flat format: customer fields at root level alongside accounts/transactions
+            # Extract all fields except accounts and transactions as customer fields
+            customer = {
+                k: v for k, v in record.items()
+                if k not in ("accounts", "transactions")
+            }
 
         # Start with customer fields
         flat = dict(customer)
